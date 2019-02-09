@@ -9,6 +9,15 @@
       </div>
    </article>
 </template>
+<script>
+export default {
+   created(){
+      if(localStorage.getItem('contResolv') !== null){
+         this.$router.push('/')
+      }
+   }
+}
+</script>
 <style>
 .content-subNav{
    width: 100%;
@@ -32,9 +41,8 @@
 
    .router-link-active{
       text-decoration: none;
-      padding: 5px 10px !important;
       color: white !important;
-      background-color: #068ffb;
+      background-color: #FFB74C;
       border-radius: 5px;
    }
    .father-link-login{

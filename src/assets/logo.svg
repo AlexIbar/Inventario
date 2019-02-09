@@ -1,0 +1,28 @@
+<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.0//EN'  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'><svg width="300" height="300" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <circle cx="100" cy="50" r="10" stroke="white" stroke-width="5" fill="none"/>
+  <circle cx="200" cy="50" r="10" stroke="white" stroke-width="5" fill="none"/>
+  <circle cx="50" cy="150" r="10" stroke="white" stroke-width="5" fill="none"/>
+  <circle cx="250" cy="150" r="10" stroke="white" stroke-width="5" fill="none"/>
+  <circle cx="150" cy="250" r="10" stroke="white" stroke-width="5" fill="none"/>
+  <line x1="95" y1="56" x2="55" y2="144" style="stroke:white;stroke-width:4"/>
+  <line x1="109" y1="50" x2="192" y2="50" style="stroke:white;stroke-width:4"/>
+  <line x1="205" y1="56" x2="245" y2="144" style="stroke:white;stroke-width:4"/>
+  <line x1="155" y1="245" x2="245" y2="155" style="stroke:white;stroke-width:4"/>
+  <line x1="145" y1="245" x2="55" y2="155" style="stroke:white;stroke-width:4"/>
+  <path d="M100 70 L100 190 L200 190 L200 80 L190 70 Z" style="stroke:white;stroke-width:4" fill="none"/>
+  <path d="M105 186 L120 181 L109 171 Z" stroke="white" fill="white"/>
+  <path d="M121 180 L110 170 L180 85 L190 95 Z" stroke="white" fill="white"/>
+  <path d="M182 84 Q196 78 190.5 93  Z" fill="white" stroke="white"/>
+  <rect x="110" y="85" width="8" height="8" fill="none" stroke="white" stroke-width="2"/>
+  <line x1="120" y1="92" x2="180" y2="92" style="stroke:white;stroke-width:4"/>
+  <rect x="110" y="100" width="8" height="8" fill="none" stroke="white" stroke-width="2"/>
+  <line x1="120" y1="107" x2="190" y2="107" style="stroke:white;stroke-width:4"/>
+  <rect x="110" y="115" width="8" height="8" fill="none" stroke="white" stroke-width="2"/>
+  <line x1="120" y1="122" x2="190" y2="122" style="stroke:white;stroke-width:4"/>
+  <rect x="110" y="130" width="8" height="8" fill="none" stroke="white" stroke-width="2"/>
+  <line x1="120" y1="137" x2="190" y2="137" style="stroke:white;stroke-width:4"/>
+  <rect x="110" y="145" width="8" height="8" fill="none" stroke="white" stroke-width="2"/>
+  <line x1="120" y1="152" x2="190" y2="152" style="stroke:white;stroke-width:4"/>
+  <polyline points="110,85 113,90 120,80" stroke="red" stroke-width="2" fill="none"/>
+  <polyline points="110,100 113,105 120,95" stroke="red" stroke-width="2" fill="none"/>
+</svg>
