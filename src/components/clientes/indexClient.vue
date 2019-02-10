@@ -1,5 +1,5 @@
 <template>
-   <div>
+   <div class="parent-general-client">
       <div class="general-client">
          <div class="datos-cli" :style="{backgroundColor:color()}" v-for="cli in clientes" :key="cli.nit">
             <div>
@@ -14,7 +14,12 @@
             <div>
                <span class="ref-client">Dir: </span><span>{{cli.dir}}</span>
             </div>
-            <div class="icono-client"></div>
+            <div>
+               <span class="ref-client">Tel: </span><span>{{cli.tel}}</span>
+            </div>
+            <div>
+               <span class="ref-client">Serv: </span><span>{{cli.servicio}}</span>
+            </div>
          </div>
       </div>
       <div @click="cambioPath" class="agregar-cli"></div>
@@ -29,25 +34,33 @@ export default {
                name:'Postobon S.A',
                nit:'890903939-5',
                fecha:'7/02/2019',
-               dir:'Cl. 62 #44-77'
+               dir:'Cl. 62 #44-77',
+               tel:'213242424',
+               servicio:'Jean'
             },
             {
                name:'Logistral S.A',
                nit:'890903930-5',
                fecha:'7/02/2019',
-               dir:'Cl. 62 #44-77'
+               dir:'Cl. 62 #44-77',
+               tel:'2424242433',
+               servicio:'Camisa'
             },
             {
                name:'Coca-cola S.A',
                nit:'890903932-5',
                fecha:'7/02/2019',
-               dir:'Cl. 62 #44-77'
+               dir:'Cl. 62 #44-77',
+               tel:'22343534',
+               servicio:'Sudaderas'
             },
             {
                name:'Logistral S.A',
                nit:'890903930-3',
                fecha:'7/02/2019',
-               dir:'Cl. 62 #44-77'
+               dir:'Cl. 62 #44-77',
+               tel:'242424233',
+               servicio:'Busos'
             }
          ]
       }
@@ -79,7 +92,7 @@ export default {
    .general-client>div{
       width:280px;
       box-sizing: border-box;
-      padding: 10px 10px 50px 10px;
+      padding: 10px;
       border-radius: 5px;
       position: relative;
       margin:5px;
@@ -87,16 +100,6 @@ export default {
    .ref-client{
       font-size: 16px;
       font-weight: bold
-   }
-   .icono-client{
-      width: 40px;
-      height: 40px;
-      background-image: url(../../assets/plus.svg);
-      border-radius: 100%;
-      position: absolute;;
-      right: 10px;
-      background-repeat: no-repeat;
-      background-size: 40px 40px
    }
    .agregar-cli{
       width:50px !important;
@@ -111,5 +114,8 @@ export default {
       background-repeat:no-repeat;
       background-size:25px;
       box-shadow:-2px 5px 10px grey
+   }
+   .parent-general-client{
+      padding-bottom: 55px
    }
 </style>
