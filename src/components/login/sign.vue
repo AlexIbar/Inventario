@@ -1,7 +1,7 @@
 <template>
    <div>
       <h1 class="titleUno">Sign In</h1>
-      <form @onsubmit.prevent="enviar()">
+      <form @submit.prevent="enviar">
          <div class="entrada-login">
             <input type="email" required v-model="log.email" id="correo">
             <label for="correo" :class="log.email !== '' ? 'log-acept' : ''">Email...</label>
@@ -35,7 +35,22 @@ export default {
    methods:{
       enviar(){
          if(this.validateEmail){
-            alert('frgfr')
+            this.$db.get('usuarios', {email:this.log.email, pass:this.log.pass}).then((response)=>{
+               if(response[0]){
+                  if(response[0].email === this.log.email){
+                     let f = {
+                        email:response[0].email,
+                        name:response[0].name,
+                        nit:response[0].nit,
+                        tel:response[0].tel
+                     }
+                     sessionStorage.setItem('contResolv', JSON.stringify(f))
+                     this.$router.push('/')
+                  }
+               }else{
+                  console.log('fdd')
+               }
+            })
          }
          return false
       },

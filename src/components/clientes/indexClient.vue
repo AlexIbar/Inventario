@@ -3,19 +3,19 @@
       <div class="general-client">
          <div class="datos-cli" :style="{backgroundColor:color()}" v-for="cli in clientes" :key="cli.nit">
             <div>
-               <span class="ref-client">Nombre: </span><span>{{cli.name}}</span>
+               <span class="ref-client">Nombre: </span><span>{{cli.nombre}}</span>
             </div>
             <div>
                <span class="ref-client">Nit: </span><span>{{cli.nit}}</span>
             </div>
             <div>
-               <span class="ref-client">Fecha ing: </span><span>{{cli.fecha}}</span>
+               <span class="ref-client">Fecha ing: </span><span>{{cli.fecha | cambio}}</span>
             </div>
             <div>
-               <span class="ref-client">Dir: </span><span>{{cli.dir}}</span>
+               <span class="ref-client">Dir: </span><span>{{cli.direccion}}</span>
             </div>
             <div>
-               <span class="ref-client">Tel: </span><span>{{cli.tel}}</span>
+               <span class="ref-client">Tel: </span><span>{{cli.telefono}}</span>
             </div>
             <div>
                <span class="ref-client">Serv: </span><span>{{cli.servicio}}</span>
@@ -29,41 +29,11 @@
 export default {
    data(){
       return{
-         clientes:[
-            {
-               name:'Postobon S.A',
-               nit:'890903939-5',
-               fecha:'7/02/2019',
-               dir:'Cl. 62 #44-77',
-               tel:'213242424',
-               servicio:'Jean'
-            },
-            {
-               name:'Logistral S.A',
-               nit:'890903930-5',
-               fecha:'7/02/2019',
-               dir:'Cl. 62 #44-77',
-               tel:'2424242433',
-               servicio:'Camisa'
-            },
-            {
-               name:'Coca-cola S.A',
-               nit:'890903932-5',
-               fecha:'7/02/2019',
-               dir:'Cl. 62 #44-77',
-               tel:'22343534',
-               servicio:'Sudaderas'
-            },
-            {
-               name:'Logistral S.A',
-               nit:'890903930-3',
-               fecha:'7/02/2019',
-               dir:'Cl. 62 #44-77',
-               tel:'242424233',
-               servicio:'Busos'
-            }
-         ]
+         clientes:[]
       }
+   },
+   mounted(){
+      this.buscar()
    },
    methods:{
       color(){
@@ -76,6 +46,14 @@ export default {
       },
       cambioPath(){
          this.$router.push('/crearCliente')
+      },
+      buscar(){
+         this.$db.getAll('clientes').then((response)=>this.clientes = response)
+      }
+   },
+   filters:{
+      cambio(dat){
+         return new Date(parseInt(dat)).toLocaleDateString()
       }
    }
 }

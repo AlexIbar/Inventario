@@ -2,11 +2,11 @@
    <div class="content-add-cli">
       <h1>Crear cliente</h1>
       <form @submit.prevent="enviar" class="formulario-client">
-         <input type="text" required placeholder="Nombre..." v-model="datos.nombre">
-         <input type="text" required placeholder="Nit..." v-model="datos.nit">
-         <input type="text" required placeholder="Telefono..." v-model="datos.tel">
-         <input type="text" required placeholder="Dirección..." v-model="datos.dir">
-         <textarea placeholder="Servicio ofrecido..." v-model="datos.serv"></textarea>
+         <input type="text" required placeholder="Nombre..." autocomplete="off" v-model="datos.nombre">
+         <input type="text" required placeholder="Nit..." autocomplete="off" v-model="datos.nit">
+         <input type="text" required placeholder="Telefono..." autocomplete="off" v-model="datos.tel">
+         <input type="text" required placeholder="Dirección..." autocomplete="off" v-model="datos.dir">
+         <textarea placeholder="Servicio ofrecido..." autocomplete="off" v-model="datos.serv"></textarea>
          <div class="btn-add-cli">
             <input type="submit">
             Aceptar
@@ -29,7 +29,16 @@ export default {
    },
    methods:{
       enviar(){
-
+         this.$db.post('clientes', {
+            nombre:this.datos.nombre,
+            nit:this.datos.nit,
+            telefono:this.datos.tel,
+            direccion:this.datos.dir,
+            fecha:Date.parse(new Date()),
+            servicio:this.datos.serv
+         }).then(()=>{
+            this.$router.push('/clientes')
+         })
       }
    }
 }
@@ -43,10 +52,10 @@ export default {
       box-sizing: border-box;
       padding: 10px;
    }
-   .formulario-client>input{
+   .formulario-client>input, .formulario-client>select{
       height: 40px;
    }
-   .formulario-client>input, .formulario-client>textarea{
+   .formulario-client>input, .formulario-client>textarea, .formulario-client>select{
       font-size: 16px;
       padding: 5px;
       border: none;

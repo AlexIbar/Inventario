@@ -6,6 +6,9 @@ import inicio from '../components/inicio/index.vue';
 import cliente from '../components/clientes/indexClient.vue'
 import creaClient from '../components/clientes/crearCli.vue'
 import lotes from '../components/lotes/indexLote.vue'
+import agregarLote from '../components/lotes/agregar1.vue'
+import factura from '../components/factura/index.vue'
+import viewLot from '../components/lotes/viewLot.vue'
 const rutas= [
    {
       path:'/',
@@ -37,6 +40,18 @@ const rutas= [
    {
       path:'/lotes',
       component:lotes
+   },
+   {
+      path:'/agregarLote',
+      component:agregarLote
+   },
+   {
+      path:'/factura',
+      component:factura
+   },
+   {
+      path:'/viewLot',
+      component:viewLot
    }
 ];
 export default rutas

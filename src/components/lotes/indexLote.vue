@@ -4,7 +4,7 @@
          <div class="targeta-lotes" v-for="lot in lotes" :key="lot.ref">
             <div class="content-targeta" :style="{backgroundColor:color()}">
                <div><span>Ref: </span>{{lot.ref}}</div>
-               <div><span>Lote cliente: </span>{{lot.loteCli}}</div>
+               <div><span>Lote cliente: </span>{{lot.lote}}</div>
                <div><span>Cantidad: </span>{{lot.cantidad}}</div>
                <div><span>Cliente:</span> {{lot.cliente}}</div>
                <div class="verAddPage" @click="activo === lot.ref ? activo = null : activo = lot.ref">
@@ -17,15 +17,15 @@
             <div v-if="activo == lot.ref" class="parent-info-add-targeta">
                <div class="info-add-targeta">
                   <div class="cerrar-cli" @click="activo = null"></div>
-                  <img :src="lot.image">
-                  <div><span>Fecha: </span>{{lot.fecha}}</div>
-                  <div><span>Pendiente: </span>{{lot.pendientes}}</div>
-                  <div class="verMas">Visitar</div>
+                  <img :src="lot.foto">
+                  <div><span>Fecha almacenamiento: </span>{{lot.fecha | fecha}}</div>
+                  <div><span>Pendiente: </span>{{lot.pendiente}}</div>
+                  <router-link tag="div" :to="'/viewLot?ref='+lot.ref" class="verMas">Visitar</router-link>
                </div>
             </div>
          </div>
       </div>
-      <div class="agregar-cli"></div>
+      <div class="agregar-cli" @click="$router.push('/agregarLote')"></div>
    </div>
 </template>
 <script>
@@ -33,36 +33,13 @@ export default {
    data(){
       return{
          activo:null,
-         lotes:[
-            {
-               ref:'aq1231',
-               loteCli:'728',
-               cantidad:728,
-               cliente:'Armando',
-               image:'https://www.bananaprint.es/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/c/a/camiseta-beagle-roly-rol-6554k-azul-denim-img01.jpg',
-               fecha:25422743,
-               pendientes:120
-            },
-           {
-               ref:'aq1232',
-               loteCli:'728',
-               cantidad:728,
-               cliente:'Armando',
-               image:'https://www.bananaprint.es/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/c/a/camiseta-beagle-roly-rol-6554k-azul-denim-img01.jpg',
-               fecha:25422743,
-               pendientes:120
-            },
-            {
-               ref:'aq1233',
-               loteCli:'728',
-               cantidad:728,
-               cliente:'Armando',
-               image:'https://www.bananaprint.es/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/c/a/camiseta-beagle-roly-rol-6554k-azul-denim-img01.jpg',
-               fecha:25422743,
-               pendientes:120
-            }
-         ]
+         lotes:[]
       }
+   },
+   mounted(){
+      this.$db.getAll('lotes').then((response)=>{
+         this.lotes = response
+      })
    },
    methods:{
       color(){
@@ -73,6 +50,11 @@ export default {
          } 
          return(color_aleatorio)
       },
+   },
+   filters:{
+      fecha(dat){
+         return new Date(parseInt(dat)).toLocaleDateString()
+      }
    }
 }
 </script>
@@ -132,6 +114,10 @@ export default {
       background-color: aliceblue;
       cursor: pointer;
       user-select:none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position:relative
    }
    .verAddPage{
       width: 40px;

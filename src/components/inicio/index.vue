@@ -1,14 +1,14 @@
 <template>
    <div class="content-init">
       <div>
-         <entrada-text></entrada-text>
+         <entrada-text @newGet="buscar"></entrada-text>
       </div>
       <div>
          <h1 class="titulo-list">
             Lista tareas
          </h1>
          <div>
-            <listTareas></listTareas>
+            <listTareas :tareas="datosTareas" @newGet="buscar"></listTareas>
          </div>
       </div>
    </div>
@@ -23,9 +23,19 @@ export default {
    },
    data(){
       return{
-
+         datosTareas:[]
       }
-   }
+   },
+   mounted(){
+      this.buscar()
+   },
+   methods: {
+      buscar(){
+         this.$db.getAll('tareas').then((response)=>{
+            this.datosTareas = response
+         })
+      }
+   },
 }
 </script>
 <style>

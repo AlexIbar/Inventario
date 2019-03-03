@@ -1,7 +1,7 @@
 <template>
    <div>
       <h1 class="titleUno">Sign Up</h1>
-      <form @onsubmit.prevent="enviar()">
+      <form @submit.prevent="enviar">
          <div class="entrada-login" v-for="(i, key) in ingre" :key="key">
             <input :type="i.tipo" required :id="i.id" v-model="i.intro">
             <label :for="i.id" :class="i.intro !== ''? 'log-acept' : ''">{{i.id}}...</label>
@@ -52,14 +52,22 @@ export default {
                tipo:'password',
                intro:''
             }
-         ],
-         intro:{
-            name:'',
-            nit:'',
-            tel:null,
-            email:'',
-            pass:''
+         ]
+      }
+   },
+   methods:{
+      enviar(){
+         let intro = {
+            name:this.ingre[0].intro,
+            nit:this.ingre[1].intro,
+            tel:this.ingre[2].intro,
+            email:this.ingre[3].intro,
+            pass:this.ingre[4].intro
          }
+         this.$db.post('usuarios', intro).then(()=>{
+            this.$router.push('/login/signIn')
+         })
+         return false
       }
    }
 }

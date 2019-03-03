@@ -1,30 +1,62 @@
 <template>
   <div id="app">
-    <div>
-      <menu-bar v-if="logiado"></menu-bar>
+    <div v-if="compania && logiado">
+      <menu-bar></menu-bar>
     </div>
-    <div class="content-todos" style="padding-top:55px">
+    <company-register v-if="compania == false" @cambio="compania = true"></company-register>
+    <div v-if="compania" class="content-todos" style="padding-top:55px">
       <router-view></router-view>
     </div>
   </div>
 </template>
 <script>
 import menuBar from './components/menu/indexMenu'
+import companyRegister from './components/company/index'
 export default {
   components:{
-    menuBar
+    menuBar,
+    companyRegister
   },
   data(){
     return{
-      logiado:true,
+      logiado:false,
+      compania:false,
     }
   },
   created(){
-    /*if(localStorage.getItem('contResolv') === null){
-      this.$router.push('/login')
-    }else{
-      this.logiado=true
-    }*/
+    this.estudiar()
+  },
+  methods:{
+    estudiar(){
+      if(localStorage.getItem('companyRegister') === null){
+        this.compania = false
+      }else{
+        this.compania = true
+        let userReg=null,
+        traido = JSON.parse(sessionStorage.getItem('contResolv'))
+        if(traido){
+          this.$db.get('usuarios',{email:traido.email}).then((res)=>{
+            userReg = res
+            if(userReg && traido.email === userReg.email && traido.nit === userReg.nit){
+              this.logiado=true
+            }else{
+              this.logiado=false
+              this.$router.push('/login')
+            }
+          })
+        }else{
+          this.logiado=false
+          this.$router.push('/login')
+        }
+      }
+    }
+  },
+  watch:{
+    '$route'(to){
+      if(to.path == '/'){
+        this.estudiar()
+      }
+    }
   }
 }
 </script>
@@ -41,6 +73,7 @@ export default {
     --naranja:#FF9800;
     --content-text:#FFB74C;
     --content-oscuro:#CC7A00;
+    --content-card:#EDEAEA
   }
   @media(min-width:1300px) {
     .content-todos{

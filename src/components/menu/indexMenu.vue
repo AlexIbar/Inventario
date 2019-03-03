@@ -1,51 +1,25 @@
 <template>
-   <div class="menu-sup">
-      <div class="men-sup-sub">
-         <div @click="lateral.left='0px',tocar=true" class="pequeno imagenes-menu" v-if="$mq === 'sm'">
-            <img src="../../assets/iconfinder-icon.svg" alt="">
+   <div>
+      <div class="barra-superior">
+         <div>
+            <img v-if="$mq == 'lg' || $mq == 'md'" src="../../assets/logo.svg" width="50px">
+            <img @click="mostrar($event)" v-if="$mq == 'sm'" src="../../assets/iconfinder-icon.svg" width="50px">
          </div>
-         <div class="grande imagenes-menu" v-if="$mq === 'md' || $mq === 'lg'">
-            <img src="../../assets/logo.svg" width="50px" alt="">
-         </div>
-         <div class="links" v-if="$mq === 'md' || $mq === 'lg'">
-               <router-link to="/" exact>
-                  <img src="..//../assets/home.png" alt=""><span>Inicio</span>
-               </router-link>
-               <router-link to="/lotes" exact>
-                  <img src="../../assets/lote.png" alt=""><span>Lotes</span>
-               </router-link>
-               <router-link to="/clientes" exact>
-                  <img src="../../assets/client.png" alt=""><span>Clientes</span>
-               </router-link>
-                  <router-link to="/factura" exact>
-                     <img src="../../assets/factura.png" width="20px" height="25px" alt=""><span>Facturar</span>
-                  </router-link>
+         <div class="links-horizontal" v-if="$mq !== 'sm'">
+            <router-link v-for="li in links" :key="li.name" :to="li.path" exact>
+               <img :src="'./'+li.image" alt="" width="20px">{{li.name}}
+            </router-link>
          </div>
       </div>
-      <div v-if="$mq === 'sm'" class="content-menu-lateral" :style="lateral">
-         <div>
-            <div class="menu-lateral" @touchstart="tocarInit($event)" @touchend="tocarSal($event)" @touchmove="tocarOver($event)">
-               <div class="logo">
-                  <img src="../../assets/logo.svg" alt="">
-               </div>
-               <div class="link-lateral">
-                  <router-link to="/" exact>
-                     <img src="..//../assets/home.png" alt=""><span>Inicio</span>
-                  </router-link>
-                  <router-link to="/lotes" exact>
-                     <img src="../../assets/lote.png" alt=""><span>Lotes</span>
-                  </router-link>
-                  <router-link to="/clientes" exact>
-                     <img src="../../assets/client.png" alt=""><span>Clientes</span>
-                  </router-link>
-                  <router-link to="/factura" exact>
-                     <img src="../../assets/factura.png" width="20px" height="25px" alt=""><span>Facturar</span>
-                  </router-link>
-               </div>
-            </div>
-            <div v-if="tocar" @touchstart="tocarInit($event)" @touchend="tocarSal($event)" @touchmove="tocarOver($event)">
-            </div>
+      <div v-if="$mq == 'sm'" @touchstart="inicio($event)" @touchmove="moviendo($event)" @touchend="final($event)" 
+      :class="visible ? 'barra-lateral barra-lateral-activo' : 'barra-lateral oculto-menu'">
+         <div class="content-link-lateral">
+            <img src="../../assets/logo.svg" width="80px">
+            <router-link v-for="li in links" :key="li.name" :to="li.path" exact>
+               <img :src="'./'+li.image" alt="" width="20px">{{li.name}}
+            </router-link>
          </div>
+         <div @click="ocultar($event)" :class="moviendose ? 'lateral-claro' : 'lateral-oscuro'"></div>
       </div>
    </div>
 </template>
@@ -53,133 +27,139 @@
 export default {
    data(){
       return{
-         tocadoInicial:null,
-         tocadoUltimo:null,
-         tocar:false,
-         oculto:true,
-         tocado:{
-            backgroundColor:'rgba(0,0,0,.0)'
-         },
-         lateral:{
-            left:`-${window.innerWidth}px`,
-            transition: "left .1s"
-         }
+         links:[
+            {
+               path:'/',
+               image:'home.png',
+               name:'Inicio'
+            },
+            {
+               path:'/lotes',
+               image:'lote.png',
+               name:'Lotes'
+            },
+            {
+               path:'/clientes',
+               image:'client.png',
+               name:'Clientes'
+            },
+            {
+               path:'/factura',
+               image:'factura.png',
+               name:'Factura'
+            },
+         ],
+         moviendose:true,
+         inicioT:null,
+         visible:false
       }
    },
    methods:{
-      tocarInit(e){
-         this.tocar=false;
-         this.tocadoInicial = e.changedTouches[0].clientX;
-         this.tocadoUltimo = e.changedTouches[0].clientX;
-         this.lateral.transition = ""
+      inicio(e){
+         this.inicioT = e.touches[0].clientX
+         e.target.parentElement.style.transition ='left 0s'
       },
-      tocarSal(){
-         //console.log(porcentajeDism)
-         if(parseInt(this.lateral.left.split('px').join('')) < 0 &&125<this.tocadoInicial-this.tocadoUltimo){
-            this.lateral.transition = "left .1s"
-            this.lateral.left=`-${window.innerWidth}px`
-            this.tocar=false
-         }else{
-            this.lateral.transition = "left .5s"
-            this.lateral.left='0px'
-            setTimeout(()=>{
-               this.tocar=true;
-               this.lateral.transition = ""
-            },400)
+      moviendo(e){
+         this.moviendose = true;
+         let padre = e.target.parentElement,
+         //distancia = padre.getBoundingClientRect().left,
+         dif = this.inicioT-e.touches[0].clientX;
+         if(dif > 0){
+            padre.style.left='-'+dif+'px'
          }
       },
-      tocarOver(e){
-         let tocadoActual = e.changedTouches[0].clientX;
-         if(tocadoActual < this.tocadoUltimo){
-            this.lateral.left=`${tocadoActual-this.tocadoInicial}px`
+      final(e){
+         let padre = e.target.parentElement,
+         leftAct = padre.getBoundingClientRect().left,
+         porcentaje = ((leftAct*(-1))*100)/280;
+         padre.style.transition ='left .5s'
+         if(porcentaje>30){
+            padre.style.left = '-280px'
+            this.visible = false
          }else{
-            let dato = parseInt(this.lateral.left.split('px').join(''))
-            this.lateral.left=`${dato+(tocadoActual-this.tocadoUltimo) >= 0 ? 0 : dato+(tocadoActual-this.tocadoUltimo)}px`
+            padre.style.left = '0px'
+            this.moviendose = false
          }
-         this.tocadoUltimo=tocadoActual
+      },
+      mostrar(e){
+         this.visible=true
+         this.moviendose = false;
+         e.target.parentElement.parentElement.parentElement.childNodes[1].style.left="0px"
+      },
+      ocultar(e){
+         this.visible=false
+         this.moviendose = true;
+         e.target.parentElement.parentElement.childNodes[1].style.left="-280px"
       }
    }
 }
 </script>
-<style scoped="true">
-   .menu-sup{
-      width: 100%;
+<style>
+   .barra-superior{
+      width:100%;
+      height:50px;
+      box-shadow:0px 3px 5px grey;
       position: fixed;
-      z-index: 200
-   }
-   .menu-lateral .router-link-active{
-      border-radius: 0px !important;
-   }
-   .link-lateral>*{
-      width: 100%;
-      text-decoration: none;
-      color: var(--content-text);
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid var(--content-text);
-      padding: 10px 5px;
-   }
-   .link-lateral img{
-      margin-right: 10px
-   }
-   .link-lateral{
-      display: flex;
-      width: 100%;
-      flex-wrap: wrap
-   }
-   .menu-lateral .logo img{
-      display: block;
-      margin: auto;
-      width: 70px
-   }
-   .content-menu-lateral{
-      position: fixed;
-      top: 0;
-      width: 100%
-   }
-   .content-menu-lateral>div{
-      display: grid;
-      grid-template-columns: 250px 1fr;
-   }
-   .content-menu-lateral>div>div:nth-child(2){
-      background-color: rgba(0,0,0, .5)
-   }
-   .menu-lateral{
-      width: 250px;
-      height: 100vh;
-      background: var(--content-oscuro)
-   }
-   .men-sup-sub{
+      z-index: 200;
       background-color: var(--naranja);
-      height: 50px;
-      display: grid;
-      grid-template-columns: 50px 1fr;
-      box-shadow: 0px 2px 10px grey;
-   }
-   .links{
       display: flex;
-      align-items: center;
+      justify-content: space-between
+   }
+   .barra-superior>:nth-child(2){
+      display: flex;
+   }
+   .links-horizontal{
+      display: flex;
       justify-content: flex-end;
+      align-items: center;
    }
-   .links img{
-      margin-right: 3px
-   }
-   .links *, .link-lateral *{
-      font-size: 18px
-   }
-   .links>*{
-      display: flex;
-      margin: 0px 15px;
-      padding: 5px 10px;
+   .links-horizontal a{
       text-decoration: none;
       color: var(--content-text);
+      padding: 5px;
+      margin: 2px;
+      font-size: 16px
    }
-   .imagenes-menu{
-      width: 50px;
-      height: 50px;
+   .barra-lateral{
+      height: 100vh;
+      position: fixed;
+      z-index: 3000;
+      transition: 'left .5s'
+   }
+   .barra-lateral-activo{
+      width: 100%;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+   }
+   .lateral-oscuro{
+      background-color: rgba(0,0,0,.5)
+   }
+   .lateral-claro{
+      background-color: rgba(0,0,0,.0)
+   }
+   .content-link-lateral{
+      background-color: var(--content-oscuro);
+      width: 280px;
+      height: 100vh;
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column
+   }
+   .content-link-lateral>img{
+      display: block;
+      margin:5px auto
+   }
+   .content-link-lateral a{
+      text-decoration: none;
+      margin: 2px;
+      padding: 5px 0px;
+      font-size: 18px;
+      color: white
+   }
+   .content-link-lateral a img{
+      margin-left:5px;
+      margin-right: 5px;
+   }
+   .oculto-menu{
+      left: -280px;
    }
 </style>
-
