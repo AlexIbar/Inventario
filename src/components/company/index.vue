@@ -30,7 +30,7 @@ export default {
     methods:{
         enviar(){
             localStorage.setItem('companyRegister', JSON.stringify(this.dato))
-            this.$emit('cambio')
+            window.location.href='/'
         }
     }
 }
